@@ -1386,7 +1386,7 @@ bool emberAfPreCliSendCallback(EmberApsFrame* apsFrame,
  *
  * @param cmd   Ver.: always
  */
-bool emberAfPreCommandReceivedCallback(EmberAfClusterCommand* cmd);
+//bool emberAfPreCommandReceivedCallback(EmberAfClusterCommand* cmd);
 /** @brief Pre Message Received
  *
  * This callback is the first in the Application Framework's message processing

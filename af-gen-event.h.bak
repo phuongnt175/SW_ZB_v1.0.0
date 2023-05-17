@@ -92,12 +92,12 @@
   "Identify Cluster Server EP 1",  \
   "Identify Cluster Server EP 2",  \
   "Identify Cluster Server EP 3",  \
-  "Event data",  \
-  "Event data",  \
-  "Event data",  \
-  "Event data",  \
-  "Event data",  \
-  "Event data",  \
+  "Find network control",  \
+  "Read value sensor light control",  \
+  "Light sensor_ read_1time control",  \
+  "M t o r rs event control",  \
+  "Button press and hold event control",  \
+  "Button release event control",  \
   "Commissioning led event control",  \
   "Find and Bind Initiator Plugin CheckTargetResponses",  \
   "Interpan Plugin FragmentReceive",  \
@@ -107,10 +107,10 @@
   "Scan Dispatch Plugin Scan",  \
   "Update TC Link Key Plugin BeginTcLinkKeyUpdate",  \
   "Finding and binding event control",  \
-  "Event data",  \
-  "Event data",  \
-  "Event data",  \
-  "Event data",  \
+  "Join network event control",  \
+  "Led1 toggle event control",  \
+  "Led2 toggle event control",  \
+  "Main state event control",  \
 
 
 // The length of the event context table used to track and retrieve cluster events
