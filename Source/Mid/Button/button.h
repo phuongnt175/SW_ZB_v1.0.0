@@ -1,16 +1,35 @@
-/*
- * button.h
+ /* File name: button.h
  *
- *  Created on: Apr 16, 2023
- *      Author: admin1
- */
+ * Description:
+ *
+ *
+ * Last Changed By:  $Author: $
+ * Revision:         $Revision: $
+ * Last Changed:     $Date: $May 17, 2023
+ *
+ * Code sample:
+ ******************************************************************************/
+
+#ifndef SOURCE_MID_BUTTON_BUTTON_H_
+#define SOURCE_MID_BUTTON_BUTTON_H_
+
+/******************************************************************************/
+/*                              INCLUDE FILES                                 */
+/******************************************************************************/
+
 #include "stddef.h"
 #include "em_cmu.h"
 #include "em_gpio.h"
 #include "gpiointerrupt.h"
 
-#ifndef SOURCE_MID_BUTTON_BUTTON_H_
-#define SOURCE_MID_BUTTON_BUTTON_H_
+/******************************************************************************/
+/*                     PRIVATE TYPES and DEFINITIONS                         */
+/******************************************************************************/
+
+
+/******************************************************************************/
+/*                     EXPORTED TYPES and DEFINITIONS                         */
+/******************************************************************************/
 
 #define BUTTON_COUNT					2
 #define GPIO_DOUT						0
@@ -28,8 +47,6 @@
 #define BUTTON_2_PIN				(3U)
 
 #define BUTTON_INIT					{{BUTTON_1_PORT,BUTTON_1_PIN},{BUTTON_2_PORT,BUTTON_2_PIN}}
-
-
 
 typedef enum
 {
@@ -71,6 +88,24 @@ typedef struct {
   boolean               isHolding;
 } Button_t;
 
+
+/******************************************************************************/
+/*                              PRIVATE DATA                                  */
+/******************************************************************************/
+
+/******************************************************************************/
+/*                              EXPORTED DATA                                 */
+/******************************************************************************/
+
+/******************************************************************************/
+/*                            PRIVATE FUNCTIONS                               */
+/******************************************************************************/
+
+/******************************************************************************/
+/*                            EXPORTED FUNCTIONS                              */
+/******************************************************************************/
+
+/******************************************************************************/
 
 typedef void (*BUTTON_holdingEvent_t)(uint8_t btIndex, ButtonEvent_e holdEvent );
 typedef void (*BUTTON_pressEvent_t)(uint8_t btIndex, ButtonEvent_e pressEvent);

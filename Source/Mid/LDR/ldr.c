@@ -51,7 +51,7 @@ uint32_t g_dwKalmanLight = 0;
  * @param   None
  * @retval  None
  */
-void LDRInit(void)
+void ldrInit(void)
 {
 	// Declare init structs
 	  IADC_Init_t init = IADC_INIT_DEFAULT;

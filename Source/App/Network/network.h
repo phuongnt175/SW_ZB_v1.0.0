@@ -1,27 +1,56 @@
-/*
- * network.h
+ /* File name: main.h
  *
- *  Created on: Apr 16, 2023
- *      Author: admin1
- */
+ * Description:
+ *
+ *
+ * Last Changed By:  $Author: $
+ * Revision:         $Revision: $
+ * Last Changed:     $Date: $May 17, 2023
+ *
+ * Code sample:
+ ******************************************************************************/
 
-#ifndef SOURCE_APP_NETWORK_NETWORK_H_
-#define SOURCE_APP_NETWORK_NETWORK_H_
+#ifndef SOURCE_APP_MAIN_MAIN_H_
+#define SOURCE_APP_MAIN_MAIN_H_
+
+/******************************************************************************/
+/*                              INCLUDE FILES                                 */
+/******************************************************************************/
+
+/******************************************************************************/
+/*                     PRIVATE TYPES and DEFINITIONS                         */
+/******************************************************************************/
+
+/******************************************************************************/
+/*                     EXPORTED TYPES and DEFINITIONS                         */
+/******************************************************************************/
+
+#define RGB1_ENDPOINT				1
+#define RGB2_ENDPOINT				2
 
 typedef enum{
-	NETWORK_HAS_PARENT,
-	NETWORK_JOIN_FAIL,
-	NETWORK_JOIN_SUCCESS,
-	NETWORK_LOST_PARENT,
-	NETWORK_OUT_NETWORK,
-}NetworkEvent_e;
+	POWER_ON_STATE,
+	REPORT_STATE,
+	IDLE_STATE,
+	REBOOT_STATE
+}SystemState_e;
 
-typedef void (*networkEventHandler) (NetworkEvent_e networkEvent);
+/******************************************************************************/
+/*                              PRIVATE DATA                                  */
+/******************************************************************************/
 
-void networkFindAndJoin(void);
-void joinNetworkEventHandler(void);
-void networkStopFindAndJoin(void);
+/******************************************************************************/
+/*                              EXPORTED DATA                                 */
+/******************************************************************************/
 
-void networkInit(networkEventHandler networkResult);
+/******************************************************************************/
+/*                            PRIVATE FUNCTIONS                               */
+/******************************************************************************/
 
-#endif /* SOURCE_APP_NETWORK_NETWORK_H_ */
+/******************************************************************************/
+/*                            EXPORTED FUNCTIONS                              */
+/******************************************************************************/
+
+/******************************************************************************/
+
+#endif /* SOURCE_APP_MAIN_MAIN_H_ */

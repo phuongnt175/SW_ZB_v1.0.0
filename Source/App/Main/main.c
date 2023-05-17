@@ -77,7 +77,7 @@ void emberAfMainInitCallback(void)
 	buttonInit(mainButtonHoldCallbackHandler, mainButtonPressCallbackHandler);
 	networkInit(mainNetworkEventHandler);
 	emberEventControlSetActive(mainStateEventControl);
-	LDRInit();
+	ldrInit();
 	KalmanFilterInit(2, 2, 0.001); // Initialize Kalman filter
 	emberEventControlSetDelayMS(lightSensorRead1timeControl, 1000);
 }
@@ -245,8 +245,8 @@ void mainStateEventHandler(void)
 
 		case REBOOT_STATE:
 			g_SystemState = IDLE_STATE;
-			EmberNetworkStatus networkStatus = emberAfNetworkState();
-			if (networkStatus != EMBER_NO_NETWORK) {
+			EmberNetworkStatus byNetworkStatus = emberAfNetworkState();
+			if (byNetworkStatus != EMBER_NO_NETWORK) {
 				sendZigDevRequest();
 				emberClearBindingTable();
 				emberLeaveNetwork();
@@ -254,6 +254,7 @@ void mainStateEventHandler(void)
 				halReboot();
 			}
 			break;
+
 		default:
 			break;
 	}
