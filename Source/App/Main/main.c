@@ -1,9 +1,17 @@
-/*
- * main.c
+ /* File name: main.c
  *
- *  Created on: Apr 16, 2023
- *      Author: admin1
- */
+ * Description:
+ *
+ *
+ * Last Changed By:  $Author: $
+ * Revision:         $Revision: $
+ * Last Changed:     $Date: $May 17, 2023
+ *
+ * Code sample:
+ ******************************************************************************/
+/******************************************************************************/
+/*                              INCLUDE FILES                                 */
+/******************************************************************************/
 
 #include "app/framework/include/af.h"
 #include "Source/Mid/Led/led.h"
@@ -17,24 +25,49 @@
 #include "math.h"
 #include "main.h"
 
+/******************************************************************************/
+/*                     PRIVATE TYPES and DEFINITIONS                         */
+/******************************************************************************/
+
 #define PERIOD_SCAN_SENSORLIGHT									1000 	//	ms
+
+
+/******************************************************************************/
+/*                     EXPORTED TYPES and DEFINITIONS                         */
+/******************************************************************************/
+
+/******************************************************************************/
+/*                              PRIVATE DATA                                  */
+/******************************************************************************/
 
 bool g_boNetworkReady = false;
 SystemState_e g_SystemState = POWER_ON_STATE;
 uint32_t g_iluxFirsttime = 0;
 uint32_t g_iluxSecondtimes = 0;
 
-void mainButtonPressCallbackHandler(uint8_t byButton, ButtonEvent_e pressHandler);
-void mainButtonHoldCallbackHandler(uint8_t byButton, ButtonEvent_e holdingHandler);
-void mainNetworkEventHandler(uint8_t byNetworkResult);
-
 /* Event **************************************************************/
-
 EmberEventControl lightSensorRead1timeControl;
 EmberEventControl mainStateEventControl;
 EmberEventControl MTORRsEventControl;
 EmberEventControl findNetworkControl;
 
+/******************************************************************************/
+/*                              EXPORTED DATA                                 */
+/******************************************************************************/
+
+/******************************************************************************/
+/*                            PRIVATE FUNCTIONS                               */
+/******************************************************************************/
+
+void mainButtonPressCallbackHandler(uint8_t byButton, ButtonEvent_e pressHandler);
+void mainButtonHoldCallbackHandler(uint8_t byButton, ButtonEvent_e holdingHandler);
+void mainNetworkEventHandler(uint8_t byNetworkResult);
+
+/******************************************************************************/
+/*                            EXPORTED FUNCTIONS                              */
+/******************************************************************************/
+
+/******************************************************************************/
 /*
  * * @brief Main Init
  */
@@ -49,7 +82,6 @@ void emberAfMainInitCallback(void)
 	KalmanFilterInit(2, 2, 0.001); // Initialize Kalman filter
 	emberEventControlSetDelayMS(lightSensorRead1timeControl, 1000);
 }
-
 
 /****************************EVENT HANDLER MIDDER********************************************************************/
 /*

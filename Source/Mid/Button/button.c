@@ -1,13 +1,34 @@
-/*
- * button.c
+ /* File name: button.c
  *
- *  Created on: Apr 16, 2023
- *      Author: admin1
- */
-
+ * Description:
+ *
+ *
+ * Last Changed By:  $Author: $
+ * Revision:         $Revision: $
+ * Last Changed:     $Date: $May 17, 2023
+ *
+ * Code sample:
+ ******************************************************************************/
+/******************************************************************************/
+/*                              INCLUDE FILES                                 */
+/******************************************************************************/
 
 #include "app/framework/include/af.h"
 #include "button.h"
+
+/******************************************************************************/
+/*                     PRIVATE TYPES and DEFINITIONS                         */
+/******************************************************************************/
+
+
+/******************************************************************************/
+/*                     EXPORTED TYPES and DEFINITIONS                         */
+/******************************************************************************/
+
+
+/******************************************************************************/
+/*                              PRIVATE DATA                                  */
+/******************************************************************************/
 
 EmberEventControl buttonPressAndHoldEventControl;
 EmberEventControl buttonReleaseEventControl;
@@ -16,6 +37,14 @@ BUTTON_holdingEvent_t g_holdingCallbackFunc = NULL;
 BUTTON_pressEvent_t g_pressAndHoldingCallbackFunc = NULL;
 Button_t g_buttonArray[BUTTON_COUNT] = BUTTON_INIT;
 
+/******************************************************************************/
+/*                              EXPORTED DATA                                 */
+/******************************************************************************/
+
+/******************************************************************************/
+/*                            PRIVATE FUNCTIONS                               */
+/******************************************************************************/
+
 void buttonPressAndHoldEventHandle(void);
 void buttonReleaseEventHandle(void);
 
@@ -23,6 +52,11 @@ static void 	halInternalButtonIsr(uint8_t pin);
 static void 	resetButtonParameter(uint8_t index);
 static uint8_t 	getButtonIndex(uint8_t pin);
 
+/******************************************************************************/
+/*                            EXPORTED FUNCTIONS                              */
+/******************************************************************************/
+
+/******************************************************************************/
 /*
  * @func	buttonInit
  * @brief	Initialize Button
