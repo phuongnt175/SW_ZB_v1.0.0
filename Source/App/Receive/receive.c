@@ -22,11 +22,9 @@
 /*                     PRIVATE TYPES and DEFINITIONS                         */
 /******************************************************************************/
 
-
 /******************************************************************************/
 /*                     EXPORTED TYPES and DEFINITIONS                         */
 /******************************************************************************/
-
 
 /******************************************************************************/
 /*                              PRIVATE DATA                                  */
@@ -51,17 +49,17 @@
  * @param   EmberAfClusterCommand
  * @retval  boolean
  */
-boolean emberAfPreCommandReceivedCallback(EmberAfClusterCommand* cmd)
+boolean emberAfPreCommandReceivedCallback(EmberAfClusterCommand* pCmd)
 {
-	if(cmd->clusterSpecific)
+	if(pCmd->clusterSpecific)
 	{
-		switch(cmd->apsFrame->clusterId)
+		switch(pCmd->apsFrame->clusterId)
 		{
 			case ZCL_ON_OFF_CLUSTER_ID:
-				receiveHandleOnOffCluster(cmd);
+				receiveHandleOnOffCluster(pCmd);
 				break;
 			case ZCL_LEVEL_CONTROL_CLUSTER_ID:
-				receiveHandleLevelControlCluster(cmd);
+				receiveHandleLevelControlCluster(pCmd);
 				break;
 			default:
 				break;
@@ -76,9 +74,9 @@ boolean emberAfPreCommandReceivedCallback(EmberAfClusterCommand* cmd)
  * @param   EmberAfIncomingMessage
  * @retval  None
  */
-boolean emberAfPreMessageReceivedCallback(EmberAfIncomingMessage* incommingMessage)
+boolean emberAfPreMessageReceivedCallback(EmberAfIncomingMessage* pIncommingMessage)
 {
-	if(incommingMessage->apsFrame->clusterId == ACTIVE_ENDPOINTS_RESPONSE)
+	if(pIncommingMessage->apsFrame->clusterId == ACTIVE_ENDPOINTS_RESPONSE)
 	{
 		return true;
 	}

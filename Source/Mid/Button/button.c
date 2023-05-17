@@ -48,9 +48,9 @@ Button_t g_buttonArray[BUTTON_COUNT] = BUTTON_INIT;
 void buttonPressAndHoldEventHandle(void);
 void buttonReleaseEventHandle(void);
 
-static void 	halInternalButtonIsr(uint8_t pin);
-static void 	resetButtonParameter(uint8_t index);
-static uint8_t 	getButtonIndex(uint8_t pin);
+static void halInternalButtonIsr(uint8_t byPin);
+static void 	resetButtonParameter(uint8_t byIndex);
+static uint8_t 	getButtonIndex(uint8_t byPin);
 
 /******************************************************************************/
 /*                            EXPORTED FUNCTIONS                              */
@@ -97,7 +97,7 @@ void buttonInit(BUTTON_holdingEvent_t holdingHandle,BUTTON_pressEvent_t pressHan
  * @param	pin
  * @retval	None
  */
-void halInternalButtonIsr(uint8_t byPin)
+static void halInternalButtonIsr(uint8_t byPin)
 {
   uint8_t byButtonStateNow;
   uint8_t byButtonStatePrev;

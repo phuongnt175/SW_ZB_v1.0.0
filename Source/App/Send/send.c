@@ -97,8 +97,8 @@ static void sendFillBufferGlobalCommand(EmberAfClusterId wClusterID,
  */
 void sendReportInfoHc(void)
 {
-	uint8_t modelID[8] = {7, 'S', 'W', '2','_','L','M','1'};
-	uint8_t manufactureID[5] = {4, 'L', 'u', 'm', 'i'};
+	uint8_t byModelID[8] = {7, 'S', 'W', '2','_','L','M','1'};
+	uint8_t byManufactureID[5] = {4, 'L', 'u', 'm', 'i'};
 	uint8_t byVersion = 1;
 
 	if(emberAfNetworkState() != EMBER_JOINED_NETWORK){
@@ -107,7 +107,7 @@ void sendReportInfoHc(void)
 	sendFillBufferGlobalCommand(ZCL_BASIC_CLUSTER_ID,
 								 ZCL_MODEL_IDENTIFIER_ATTRIBUTE_ID,
 								 ZCL_READ_ATTRIBUTES_RESPONSE_COMMAND_ID,
-								 modelID,
+								 byModelID,
 								 8,
 								 ZCL_CHAR_STRING_ATTRIBUTE_TYPE);
 	SendCommandUnicast(SOURCE_ENDPOINT_PRIMARY,
@@ -117,7 +117,7 @@ void sendReportInfoHc(void)
 	sendFillBufferGlobalCommand(ZCL_BASIC_CLUSTER_ID,
 								 ZCL_MANUFACTURER_NAME_ATTRIBUTE_ID,
 								 ZCL_READ_ATTRIBUTES_RESPONSE_COMMAND_ID,
-								 manufactureID,
+								 byManufactureID,
 								 5,
 								 ZCL_CHAR_STRING_ATTRIBUTE_TYPE);
 	SendCommandUnicast(SOURCE_ENDPOINT_PRIMARY,
@@ -207,16 +207,16 @@ void sendZigDevRequest(void)
  */
 void sendBindingInitToTarget(uint8_t byRemoteEndpoint, uint8_t byLocalEndpoint, bool boValue, uint16_t wNodeID)
 {
-	EmberStatus status = EMBER_INVALID_BINDING_INDEX;
+	EmberStatus byStatus = EMBER_INVALID_BINDING_INDEX;
 
 	for(uint8_t i = 0; i< EMBER_BINDING_TABLE_SIZE ; i++)
 		{
 			EmberBindingTableEntry binding;
-			status = emberGetBinding(i, &binding);
+			byStatus = emberGetBinding(i, &binding);
 			uint16_t bindingNodeID = emberGetBindingRemoteNodeId(i);
 
 			// check status send
-			if(status != EMBER_SUCCESS)
+			if(byStatus != EMBER_SUCCESS)
 			{
 				return;
 			}else if((binding.local == byLocalEndpoint) && (binding.remote == byRemoteEndpoint) && (bindingNodeID == wNodeID))
@@ -236,6 +236,7 @@ void sendBindingInitToTarget(uint8_t byRemoteEndpoint, uint8_t byLocalEndpoint, 
 							emberAfSendCommandUnicast(EMBER_OUTGOING_DIRECT, bindingNodeID);
 							sendOnOffStateReport(binding.local, LED_ON);
 							break;
+
 						case false:
 							emberAfCorePrintln("SEND OFF INIT TO TARGET");
 							emberAfFillCommandOnOffClusterOff();

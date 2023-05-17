@@ -130,8 +130,8 @@ boolean emberAfStackStatusCallback(EmberStatus byStatus)
 	}
 	else
 	{
-		EmberNetworkStatus nwkStatusCurrent = emberAfNetworkState();
-		if(nwkStatusCurrent == EMBER_NO_NETWORK)
+		EmberNetworkStatus byNwkStatusCurrent = emberAfNetworkState();
+		if(byNwkStatusCurrent == EMBER_NO_NETWORK)
 		{
 			if(networkEventHandle != NULL)
 			{
@@ -139,7 +139,7 @@ boolean emberAfStackStatusCallback(EmberStatus byStatus)
 				emberAfCorePrintln("NETWORK_OUT_NETWORK");
 			}
 		}
-		else if(nwkStatusCurrent == EMBER_JOINED_NETWORK_NO_PARENT){
+		else if(byNwkStatusCurrent == EMBER_JOINED_NETWORK_NO_PARENT){
 			emberAfCorePrintln("NETWORK_LOST_PARENT");
 			networkEventHandle(NETWORK_LOST_PARENT);
 		}
