@@ -111,6 +111,7 @@ void mainButtonPressCallbackHandler(uint8_t byButton, ButtonEvent_e pressHandler
 				sendOnOffStateReport(2, LED_ON);
 			}
 		break;
+
 		case press_2:
 			if(byButton == SW_1)
 			{
@@ -129,6 +130,7 @@ void mainButtonPressCallbackHandler(uint8_t byButton, ButtonEvent_e pressHandler
 				sendOnOffStateReport(2, LED_OFF);
 			}
 			break;
+
 		case press_3:
 			if(byButton == SW_1)
 			{
@@ -143,6 +145,7 @@ void mainButtonPressCallbackHandler(uint8_t byButton, ButtonEvent_e pressHandler
 				toggleLed(LED2,ledRGB,3,200,200);
 			}
 			break;
+
 		case press_4:
 			if(byButton == SW_1)
 			{
@@ -153,6 +156,7 @@ void mainButtonPressCallbackHandler(uint8_t byButton, ButtonEvent_e pressHandler
 				emberAfCorePrintln("SW2: 4 time");
 			}
 			break;
+
 		case press_5:
 			if(byButton == SW_1)
 			{
@@ -166,6 +170,7 @@ void mainButtonPressCallbackHandler(uint8_t byButton, ButtonEvent_e pressHandler
 				emberEventControlSetDelayMS(mainStateEventControl,3000);
 			}
 			break;
+
 		default:
 			break;
 		}
@@ -228,13 +233,16 @@ void mainStateEventHandler(void)
 			}
 			g_SystemState = IDLE_STATE;
 			break;
+
 		case REPORT_STATE:
 			g_SystemState = IDLE_STATE;
 			sendReportInfoHc();
 			break;
+
 		case IDLE_STATE:
 				emberAfCorePrintln("IDLE_STATE");
 			break;
+
 		case REBOOT_STATE:
 			g_SystemState = IDLE_STATE;
 			EmberNetworkStatus networkStatus = emberAfNetworkState();

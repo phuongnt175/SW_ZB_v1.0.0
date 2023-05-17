@@ -127,9 +127,8 @@ bool receiveHandleLevelControlCluster(EmberAfClusterCommand* pCmd)
 						}else
 						{
 							emberAfCorePrintln("turn 0ff");
-							turnOffRBGLed(LED1);
+							turnOffRGBLed(LED1);
 						}
-
 					}
 					break;
 				default:
@@ -161,19 +160,18 @@ bool receiveHandleOnOffCluster(EmberAfClusterCommand* pCmd)
 			case EMBER_INCOMING_UNICAST:
 				if(byLocalEndpoint == 1)
 				{
-				turnOffRBGLed(LED1);
-				SEND_OnOffStateReport(byLocalEndpoint, LED_OFF);
+				turnOffRGBLed(LED1);
+				sendOnOffStateReport(byLocalEndpoint, LED_OFF);
 				emberAfCorePrintln("check: %d",checkBindingTable(byLocalEndpoint));
 					if(checkBindingTable(byLocalEndpoint) >= 1)
 					{
-
-						SEND_BindingInitToTarget(byRemoteEndpoint, byLocalEndpoint, false, wIgnoreNodeID);
+						sendBindingInitToTarget(byRemoteEndpoint, byLocalEndpoint, false, wIgnoreNodeID);
 					}
 				}
 				if(byLocalEndpoint == 2)
 				{
-					turnOffRBGLed(LED2);
-					SEND_OnOffStateReport(byLocalEndpoint, LED_OFF);
+					turnOffRGBLed(LED2);
+					sendOnOffStateReport(byLocalEndpoint, LED_OFF);
 				}
 				break;
 			case EMBER_INCOMING_MULTICAST:
@@ -194,16 +192,16 @@ bool receiveHandleOnOffCluster(EmberAfClusterCommand* pCmd)
 				if(byLocalEndpoint == 1)
 				{
 					turnOnLed(LED1, ledBlue);
-					SEND_OnOffStateReport(byLocalEndpoint, LED_ON);
+					sendOnOffStateReport(byLocalEndpoint, LED_ON);
 					if(checkBindingTable(byLocalEndpoint) >= 1)
 					{
-						SEND_BindingInitToTarget(byRemoteEndpoint, byLocalEndpoint, true, wIgnoreNodeID);
+						sendBindingInitToTarget(byRemoteEndpoint, byLocalEndpoint, true, wIgnoreNodeID);
 					}
 				}
 				if(byLocalEndpoint == 2)
 				{
 					turnOnLed(LED2, ledBlue);
-					SEND_OnOffStateReport(byLocalEndpoint, LED_ON);
+					sendOnOffStateReport(byLocalEndpoint, LED_ON);
 				}
 				break;
 			case EMBER_INCOMING_MULTICAST:

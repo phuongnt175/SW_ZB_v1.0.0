@@ -24,11 +24,9 @@
 /*                     PRIVATE TYPES and DEFINITIONS                         */
 /******************************************************************************/
 
-
 /******************************************************************************/
 /*                     EXPORTED TYPES and DEFINITIONS                         */
 /******************************************************************************/
-
 
 /******************************************************************************/
 /*                              PRIVATE DATA                                  */
@@ -136,7 +134,7 @@ void sendReportInfoHc(void)
 
 
 /**
- * @func    SEND_OnOffStateReport
+ * @func    sendOnOffStateReport
  * @brief   Send On/Off State
  * @param   Endpoint, value
  * @retval  None
