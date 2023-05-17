@@ -1,4 +1,4 @@
- /* File name: main.h
+ /* File name: network.h
  *
  * Description:
  *
@@ -10,30 +10,30 @@
  * Code sample:
  ******************************************************************************/
 
-#ifndef SOURCE_APP_MAIN_MAIN_H_
-#define SOURCE_APP_MAIN_MAIN_H_
+#ifndef SOURCE_APP_NETWORK_NETWORK_H_
+#define SOURCE_APP_NETWORK_NETWORK_H_
 
 /******************************************************************************/
 /*                              INCLUDE FILES                                 */
 /******************************************************************************/
 
+
 /******************************************************************************/
 /*                     PRIVATE TYPES and DEFINITIONS                         */
 /******************************************************************************/
+
 
 /******************************************************************************/
 /*                     EXPORTED TYPES and DEFINITIONS                         */
 /******************************************************************************/
 
-#define RGB1_ENDPOINT				1
-#define RGB2_ENDPOINT				2
-
 typedef enum{
-	POWER_ON_STATE,
-	REPORT_STATE,
-	IDLE_STATE,
-	REBOOT_STATE
-}SystemState_e;
+	NETWORK_HAS_PARENT,
+	NETWORK_JOIN_FAIL,
+	NETWORK_JOIN_SUCCESS,
+	NETWORK_LOST_PARENT,
+	NETWORK_OUT_NETWORK,
+}NetworkEvent_e;
 
 /******************************************************************************/
 /*                              PRIVATE DATA                                  */
@@ -52,5 +52,12 @@ typedef enum{
 /******************************************************************************/
 
 /******************************************************************************/
+typedef void (*networkEventHandler) (NetworkEvent_e networkEvent);
 
-#endif /* SOURCE_APP_MAIN_MAIN_H_ */
+void networkFindAndJoin(void);
+void networkStopFindAndJoin(void);
+void joinNetworkEventHandler(void);
+
+void networkInit(networkEventHandler networkResult);
+
+#endif /* SOURCE_APP_NETWORK_NETWORK_H_ */
