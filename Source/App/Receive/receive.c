@@ -24,10 +24,10 @@ boolean emberAfPreCommandReceivedCallback(EmberAfClusterCommand* cmd)
 		switch(cmd->apsFrame->clusterId)
 		{
 			case ZCL_ON_OFF_CLUSTER_ID:
-				RECEIVE_HandleOnOffCluster(cmd);
+				receiveHandleOnOffCluster(cmd);
 				break;
 			case ZCL_LEVEL_CONTROL_CLUSTER_ID:
-				RECEIVE_HandleLevelControlCluster(cmd);
+				receiveHandleLevelControlCluster(cmd);
 				break;
 			default:
 				break;
@@ -35,7 +35,6 @@ boolean emberAfPreCommandReceivedCallback(EmberAfClusterCommand* cmd)
 	}
 	return false;
 }
-
 
 /**
  * @func    emberAfPreMessageReceivedCallback
@@ -52,45 +51,44 @@ boolean emberAfPreMessageReceivedCallback(EmberAfIncomingMessage* incommingMessa
  return false;
 }
 
-
 /**
- * @func    RECEIVE_HandleLevelControlCluster
+ * @func    receiveHandleLevelControlCluster
  * @brief   Handler Level led
- * @param   EmberAfClusterCommand
+ * @param   pCmd
  * @retval  None
  */
-bool RECEIVE_HandleLevelControlCluster(EmberAfClusterCommand* cmd)
+bool receiveHandleLevelControlCluster(EmberAfClusterCommand* pCmd)
 {
-	uint8_t commandID = cmd->commandId;
-	uint8_t endPoint  = cmd->apsFrame -> destinationEndpoint;
-	uint8_t payloadOffset = cmd->payloadStartIndex;		// Gan offset = startindex
-	uint8_t level;
-	uint16_t transitionTime;
-	emberAfCorePrintln("ClusterID: 0x%2X", cmd->apsFrame->clusterId);
+	uint8_t byCommandID = pCmd->commandId;
+	uint8_t byEndPoint  = pCmd->apsFrame -> destinationEndpoint;
+	uint8_t byPayloadOffset = pCmd->payloadStartIndex;		// Gan offset = startindex
+	uint8_t byLevel;
+	uint16_t wTransitionTime;
+	emberAfCorePrintln("ClusterID: 0x%2X", pCmd->apsFrame->clusterId);
 /******************************************LEVEL CONTROL LED***************************************************************************/
-		switch(commandID)
+		switch(byCommandID)
 			{
 
 				case ZCL_MOVE_TO_LEVEL_COMMAND_ID:
-					if(cmd->bufLen < payloadOffset + 1u)
+					if(pCmd->bufLen < byPayloadOffset + 1u)
 					{
 						return EMBER_ZCL_STATUS_MALFORMED_COMMAND;
 					}
-					level = emberAfGetInt8u(cmd->buffer, payloadOffset, cmd->bufLen);		// Lay 1 byte gia tri cua level control
-					transitionTime = emberAfGetInt16u(cmd->buffer, payloadOffset+1, cmd->bufLen);
-					emberAfCorePrintln(" RECEIVE_HandleLevelControlCluster LEVEL = %d, time: 0x%2X\n", level, transitionTime);
+					byLevel = emberAfGetInt8u(pCmd->buffer, byPayloadOffset, cmd->bufLen);		// Lay 1 byte gia tri cua level control
+					wTransitionTime = emberAfGetInt16u(pCmd->buffer, byPayloadOffset+1, pCmd->bufLen);
+					emberAfCorePrintln(" RECEIVE_HandleLevelControlCluster LEVEL = %d, time: 0x%2X\n", byLevel, wTransitionTime);
 
-					if(endPoint == 1)
+					if(byEndPoint == 1)
 					{
-						if(level >=80)
+						if(byLevel >=80)
 						{
 							emberAfCorePrintln("LED GREEN");
 							turnOnLed(LED1, ledGreen);
-						}else if(level>=40)
+						}else if(byLevel>=40)
 						{
 							emberAfCorePrintln("LED RED");
 							turnOnLed(LED1, ledRed);
-						}else if(level>0)
+						}else if(byLevel>0)
 						{
 							emberAfCorePrintln("LED BLUE");
 							turnOnLed(LED1, ledBlue);
@@ -108,43 +106,42 @@ bool RECEIVE_HandleLevelControlCluster(EmberAfClusterCommand* cmd)
 		return false;
 }
 
-
 /**
- * @func    RECEIVE_HandleOnOffCluster
+ * @func    receiveHandleOnOffCluster
  * @brief   Handler On/Off command
  * @param   EmberAfClusterCommand
  * @retval  bool
  */
-bool RECEIVE_HandleOnOffCluster(EmberAfClusterCommand* cmd)
+bool receiveHandleOnOffCluster(EmberAfClusterCommand* pCmd)
 {
-	uint8_t commandID = cmd->commandId;
-	uint8_t localEndpoint = cmd ->apsFrame -> destinationEndpoint;
-	uint8_t remoteEndpoint = cmd->apsFrame -> sourceEndpoint;
-	uint16_t IgnoreNodeID = cmd->source;
+	uint8_t byCommandID = pCmd->commandId;
+	uint8_t byLocalEndpoint = pCmd ->apsFrame -> destinationEndpoint;
+	uint8_t byRemoteEndpoint = pCmd->apsFrame -> sourceEndpoint;
+	uint16_t wIgnoreNodeID = pCmd->source;
 /************************************ON-OFF LED******************************************************************************************/
-	emberAfCorePrintln("RECEIVE_HandleOnOffCluster SourceEndpoint = %d, RemoteEndpoint = %d, commandID = %d, nodeID %2X\n",remoteEndpoint,localEndpoint,commandID,IgnoreNodeID);
-	switch(commandID)
+	emberAfCorePrintln("receiveHandleOnOffCluster SourceEndpoint = %d, RemoteEndpoint = %d, commandID = %d, nodeID %2X\n",byRemoteEndpoint,byLocalEndpoint,byCommandID,wIgnoreNodeID);
+	switch(byCommandID)
 	{
 	case ZCL_OFF_COMMAND_ID:
 		emberAfCorePrintln("Turn off LED");
 
-		switch (cmd->type) {
+		switch (pCmd->type) {
 			case EMBER_INCOMING_UNICAST:
-				if(localEndpoint == 1)
+				if(byLocalEndpoint == 1)
 				{
 				turnOffRBGLed(LED1);
-				SEND_OnOffStateReport(localEndpoint, LED_OFF);
-				emberAfCorePrintln("check: %d",checkBindingTable(localEndpoint));
-					if(checkBindingTable(localEndpoint) >= 1)
+				SEND_OnOffStateReport(byLocalEndpoint, LED_OFF);
+				emberAfCorePrintln("check: %d",checkBindingTable(byLocalEndpoint));
+					if(checkBindingTable(byLocalEndpoint) >= 1)
 					{
 
-						SEND_BindingInitToTarget(remoteEndpoint, localEndpoint, false, IgnoreNodeID);
+						SEND_BindingInitToTarget(byRemoteEndpoint, byLocalEndpoint, false, wIgnoreNodeID);
 					}
 				}
-				if(localEndpoint == 2)
+				if(byLocalEndpoint == 2)
 				{
 					turnOffRBGLed(LED2);
-					SEND_OnOffStateReport(localEndpoint, LED_OFF);
+					SEND_OnOffStateReport(byLocalEndpoint, LED_OFF);
 				}
 				break;
 			case EMBER_INCOMING_MULTICAST:
@@ -160,21 +157,21 @@ bool RECEIVE_HandleOnOffCluster(EmberAfClusterCommand* cmd)
 	case ZCL_ON_COMMAND_ID:
 
 		emberAfCorePrintln("Turn on LED");
-		switch (cmd->type) {
+		switch (pCmd->type) {
 			case EMBER_INCOMING_UNICAST:
-				if(localEndpoint == 1)
+				if(byLocalEndpoint == 1)
 				{
 					turnOnLed(LED1, ledBlue);
-					SEND_OnOffStateReport(localEndpoint, LED_ON);
-					if(checkBindingTable(localEndpoint) >= 1)
+					SEND_OnOffStateReport(byLocalEndpoint, LED_ON);
+					if(checkBindingTable(byLocalEndpoint) >= 1)
 					{
-						SEND_BindingInitToTarget(remoteEndpoint, localEndpoint, true, IgnoreNodeID);
+						SEND_BindingInitToTarget(byRemoteEndpoint, byLocalEndpoint, true, wIgnoreNodeID);
 					}
 				}
-				if(localEndpoint == 2)
+				if(byLocalEndpoint == 2)
 				{
 					turnOnLed(LED2, ledBlue);
-					SEND_OnOffStateReport(localEndpoint, LED_ON);
+					SEND_OnOffStateReport(byLocalEndpoint, LED_ON);
 				}
 				break;
 			case EMBER_INCOMING_MULTICAST:
@@ -193,16 +190,11 @@ bool RECEIVE_HandleOnOffCluster(EmberAfClusterCommand* cmd)
 
 /*
  * @function 			: checkBindingTable
- *
  * @brief				: API support to check information on binding table.
- *
  * @parameter			: localEndpoint
- *
  * @return value		: True or false
  */
-
-
-uint8_t checkBindingTable(uint8_t localEndpoint)
+uint8_t checkBindingTable(uint8_t byLocalEndpoint)
 {
 	uint8_t index = 0;
 	for(uint8_t i=0; i< EMBER_BINDING_TABLE_SIZE; i++)
@@ -210,7 +202,7 @@ uint8_t checkBindingTable(uint8_t localEndpoint)
 		EmberBindingTableEntry binding;
 		if(emberGetBindingRemoteNodeId(i) != EMBER_SLEEPY_BROADCAST_ADDRESS){
 			emberGetBinding(i, &binding);
-			if(binding.local == localEndpoint && (binding.type == EMBER_UNICAST_BINDING))
+			if(binding.local == byLocalEndpoint && (binding.type == EMBER_UNICAST_BINDING))
 			{
 				index++;
 			}

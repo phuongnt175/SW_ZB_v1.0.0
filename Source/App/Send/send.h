@@ -14,12 +14,12 @@
 #define HC_NETWORK_ADDRESS						0x0000
  #define ZDO_MESSAGE_OVERHEAD 					1
 
-void SendZigDevRequest(void);
-void SEND_OnOffStateReport(uint8_t Endpoint, uint8_t value);
-void SEND_ReportInfoHc(void);
+void sendZigDevRequest(void);
+void sendOnOffStateReport(uint8_t byEndpoint, uint8_t byValue);
+void sendReportInfoHc(void);
 void SendZigDevRequest(void);
 
-void SEND_LDRStateReport(uint8_t Endpoint, uint32_t value);
-void SEND_BindingInitToTarget(uint8_t remoteEndpoint, uint8_t localEndpoint, bool value, uint16_t nodeID);
+void sendLDRStateReport(uint8_t byEndpoint, uint32_t dwValue);
+void sendBindingInitToTarget(uint8_t byRemoteEndpoint, uint8_t byLocalEndpoint, bool boValue, uint16_t wNodeID);
 
 #endif /* SOURCE_APP_SEND_SEND_H_ */

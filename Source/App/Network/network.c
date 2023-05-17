@@ -4,39 +4,31 @@
  *  Created on: Apr 16, 2023
  *      Author: admin1
  */
-
 #include "app/framework/include/af.h"
 #include "network.h"
 
 EmberEventControl joinNetworkEventControl;
-uint32_t timeFindAndJoin = 0;
 networkEventHandler networkEventHandle = NULL;
-
+uint32_t dwTimeFindAndJoin = 0;
 
 /*
  * @function 			: Network_Init
- *
  * @brief				: Handle event network.
- *
  * @parameter			: networkEventHandler
- *
  * @return value		: None
  */
-void Network_Init(networkEventHandler networkResult)
+void networkInit(networkEventHandler networkResult)
 {
 	networkEventHandle = networkResult;
 }
 
 /*
- * @function 			: NETWORK_FindAndJoin
- *
+ * @function 			: networkFindAndJoin
  * @brief				: Find network
- *
  * @parameter			: None
- *
  * @return value		: None
  */
-void NETWORK_FindAndJoin(void)
+void networkFindAndJoin(void)
 {
 	if(emberAfNetworkState() == EMBER_NO_NETWORK)
 	{
@@ -44,29 +36,21 @@ void NETWORK_FindAndJoin(void)
 	}
 }
 
-
 /*
- * @function 			: NETWORK_StopFindAndJoin
- *
+ * @function 			: networkStopFindAndJoin
  * @brief				: Stop find network
- *
  * @parameter			: None
- *
  * @return value		: None
  */
-void NETWORK_StopFindAndJoin(void)
+void networkStopFindAndJoin(void)
 {
 	emberAfPluginNetworkSteeringStop();
 }
 
-
 /*
  * @function 			: joinNetworkEventHandler
- *
  * @brief				: Handle Event Join network
- *
  * @parameter			: None
- *
  * @return value		: None
  */
 void joinNetworkEventHandler(void)
@@ -76,29 +60,25 @@ void joinNetworkEventHandler(void)
 	if(emberAfNetworkState() == EMBER_NO_NETWORK)
 	{
 		emberAfPluginNetworkSteeringStart();
-		timeFindAndJoin++;
+		dwTimeFindAndJoin++;
 	}
 }
 
-
 /*
  * @function 			: emberAfStackStatusCallback
- *
  * @brief				: Stack Status
- *
  * @parameter			: EmberStatus
- *
  * @return value		: True or false
  */
-boolean emberAfStackStatusCallback(EmberStatus status)
+boolean emberAfStackStatusCallback(EmberStatus byStatus)
 {
 	emberAfCorePrintln("emberAfStackStatusCallback\n");
 
-	if(status == EMBER_NETWORK_UP)
+	if(byStatus == EMBER_NETWORK_UP)
 	{
-		if(timeFindAndJoin>0)// vao mang thanh cong
+		if(dwTimeFindAndJoin>0)// vao mang thanh cong
 		{
-			NETWORK_StopFindAndJoin();
+			networkStopFindAndJoin();
 			if(networkEventHandle != NULL)
 			{
 				networkEventHandle(NETWORK_JOIN_SUCCESS);
@@ -130,7 +110,7 @@ boolean emberAfStackStatusCallback(EmberStatus status)
 			networkEventHandle(NETWORK_LOST_PARENT);
 		}
 	}
-	if(status == EMBER_JOIN_FAILED)
+	if(byStatus == EMBER_JOIN_FAILED)
 	{
 		emberAfCorePrintln("NETWORK_JOIN_FAIL");
 		networkEventHandle(NETWORK_JOIN_FAIL);

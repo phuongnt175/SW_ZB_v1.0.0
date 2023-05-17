@@ -46,7 +46,7 @@ typedef enum
 	hold_5s ,
 	hold_max,
 	unknown,
-}BUTTON_Event_t;
+}ButtonEvent_e;
 
 enum
 {
@@ -63,17 +63,17 @@ enum
 typedef struct {
   GPIO_Port_TypeDef		port;
   unsigned int			pin;
-  boolean					state;
+  boolean				state;
   uint8_t				pressCount;
   uint8_t				holdTime;
-  boolean					release;
-  boolean					press;
-  boolean                  isHolding;
-} BUTTONx_t;
+  boolean				release;
+  boolean				press;
+  boolean               isHolding;
+} Button_t;
 
 
-typedef void (*BUTTON_holdingEvent_t)(uint8_t btIndex, BUTTON_Event_t holdEvent );
-typedef void (*BUTTON_pressEvent_t)(uint8_t btIndex, BUTTON_Event_t pressEvent);
+typedef void (*BUTTON_holdingEvent_t)(uint8_t btIndex, ButtonEvent_e holdEvent );
+typedef void (*BUTTON_pressEvent_t)(uint8_t btIndex, ButtonEvent_e pressEvent);
 
 void buttonInit(BUTTON_holdingEvent_t holdingHandler,BUTTON_pressEvent_t pressHandler);
 

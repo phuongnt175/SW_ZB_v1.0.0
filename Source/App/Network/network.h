@@ -14,14 +14,14 @@ typedef enum{
 	NETWORK_JOIN_SUCCESS,
 	NETWORK_LOST_PARENT,
 	NETWORK_OUT_NETWORK,
-}Network_Event_e;
+}NetworkEvent_e;
 
-typedef void (*networkEventHandler) (Network_Event_e networkEvent);
+typedef void (*networkEventHandler) (NetworkEvent_e networkEvent);
 
-void NETWORK_FindAndJoin(void);
+void networkFindAndJoin(void);
 void joinNetworkEventHandler(void);
-void NETWORK_StopFindAndJoin(void);
+void networkStopFindAndJoin(void);
 
-void Network_Init(networkEventHandler networkResult);
+void networkInit(networkEventHandler networkResult);
 
 #endif /* SOURCE_APP_NETWORK_NETWORK_H_ */

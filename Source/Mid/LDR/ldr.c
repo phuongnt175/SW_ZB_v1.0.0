@@ -1,22 +1,50 @@
-/*
- * ldr.c
+/* File name: ldr.c
  *
- *  Created on: Apr 16, 2023
- *      Author: admin1
- */
-
+ * Description:
+ *
+ *
+ * Last Changed By:  $Author: $
+ * Revision:         $Revision: $
+ * Last Changed:     $Date: $May 16, 2023
+ *
+ * Code sample:
+ ******************************************************************************/
+/******************************************************************************/
+/*                              INCLUDE FILES                                 */
+/******************************************************************************/
 #include "app/framework/include/af.h"
+#include "Source/Mid/kalman_filter/kalman_filter.h"
 #include <math.h>
 #include "ldr.h"
-#include "Source/Mid/Kalman_filter/kalman_filter.h"
+
+/******************************************************************************/
+/*                     PRIVATE TYPES and DEFINITIONS                         */
+/******************************************************************************/
 
 
+/******************************************************************************/
+/*                     EXPORTED TYPES and DEFINITIONS                         */
+/******************************************************************************/
+
+
+/******************************************************************************/
+/*                              PRIVATE DATA                                  */
+/******************************************************************************/
 
 EmberEventControl readValueSensorLightControl;
 volatile uint32_t registor;
 volatile uint32_t lux = 0;
 uint32_t valueADC=0;
-uint32_t kalman_Light=0;
+uint32_t valueLDR=0.0048828125;
+uint32_t kalmanLight=0;
+
+/******************************************************************************/
+/*                              EXPORTED DATA                                 */
+/******************************************************************************/
+
+/******************************************************************************/
+/*                            PRIVATE FUNCTIONS                               */
+/******************************************************************************/
 /**
  * @func    LDRInit
  * @brief   LDR initialize
@@ -57,7 +85,6 @@ void LDRInit(void)
 	                                                                    0,
 	                                                                    iadcCfgModeNormal,
 	                                                                    init.srcClkPrescale);
-
 	  // Set oversampling rate to 32x
 	  // resolution formula res = 11 + log2(oversampling * digital averaging)
 	  // in this case res = 11 + log2(32*1) = 16
@@ -68,10 +95,10 @@ void LDRInit(void)
 	  initSingle.dataValidLevel = _IADC_SINGLEFIFOCFG_DVL_VALID1;
 
 	  // Set conversions to run continuously
-	//  initSingle.triggerAction = iadcTriggerActionContinuous;
+	  // initSingle.triggerAction = iadcTriggerActionContinuous;
 
 	  // Set alignment to right justified with 16 bits for data field
-	//  initSingle.alignment = iadcAlignRight16;
+	  // initSingle.alignment = iadcAlignRight16;
 
 	  // Configure Input sources for single ended conversion
 	  initSingleInput.posInput = iadcPosInputPortCPin5;
@@ -88,7 +115,9 @@ void LDRInit(void)
 	  // Allocate the analog bus for ADC0 inputs
 	  GPIO->IADC_INPUT_0_BUS |= GPIO_CDBUSALLOC_CDODD0_ADC0;  //IADC_INPUT_BUSALLOC
 }
-
+/******************************************************************************/
+/*                            EXPORTED FUNCTIONS                              */
+/******************************************************************************/
 /**
  * @func   LightSensor_AdcPollingReadHandler
  * @brief  Read value from ADC
@@ -99,23 +128,25 @@ uint32_t LightSensor_AdcPollingRead(void)
 {
 	emberEventControlSetInactive(readValueSensorLightControl);
 	IADC_Result_t iadcResult;
+
 	// Start IADC conversion
 	IADC_command(IADC0, iadcCmdStartSingle);
 
 	// Wait for conversion to be complete
 	while((IADC0->STATUS & (_IADC_STATUS_CONVERTING_MASK
-				| _IADC_STATUS_SINGLEFIFODV_MASK)) != IADC_STATUS_SINGLEFIFODV); //while combined status bits 8 & 6 don't equal 1 and 0 respectively
+				| _IADC_STATUS_SINGLEFIFODV_MASK)) != IADC_STATUS_SINGLEFIFODV);
+	//while combined status bits 8 & 6 don't equal 1 and 0 respectively
 
 	// Get ADC result
 	iadcResult = IADC_pullSingleFifoResult(IADC0);
 	valueADC = iadcResult.data;
-	kalman_Light = Kalman_sensor(valueADC);
+	kalmanLight = Kalman_sensor(valueADC);
+
 	// Calculate input voltage:
 	//  For differential inputs, the resultant range is from -Vref to +Vref, i.e.,
 	//  for Vref = AVDD = 3.30V, 12 bits represents 6.60V full scale IADC range.
-	registor= 10000*(3300 - kalman_Light)/(kalman_Light);    // registor  = 10K*ADC / (4095 -ADC)
+	registor= 10000*(3300 - kalmanLight)/(kalmanLight);    // registor  = 10K*ADC / (4095 -ADC)
 	lux = abs(316*pow(10,5)*pow(registor,-1.4));
 	return lux;
 }
-
-
+/******************************************************************************/

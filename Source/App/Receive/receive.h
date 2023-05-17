@@ -13,10 +13,9 @@
 
 /* Function prototypes -----------------------------------------------*/
 
-uint8_t checkBindingTable(uint8_t localEndpoint);
-boolean emberAfPreCommandReceivedCallback(EmberAfClusterCommand* cmd);
-bool RECEIVE_HandleLevelControlCluster(EmberAfClusterCommand* cmd);
-bool RECEIVE_HandleOnOffCluster(EmberAfClusterCommand* cmd);
-
+uint8_t checkBindingTable(uint8_t byLocalEndpoint);
+boolean emberAfPreCommandReceivedCallback(EmberAfClusterCommand* pCmd);
+bool receiveHandleLevelControlCluster(EmberAfClusterCommand* pCmd);
+bool receiveHandleOnOffCluster(EmberAfClusterCommand* pCmd);
 
 #endif /* SOURCE_APP_RECEIVE_RECEIVE_H_ */
