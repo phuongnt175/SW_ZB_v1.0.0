@@ -39,7 +39,6 @@
 
 #define HOLD_TIME_MIN					5
 
-
 #define BUTTON_1_PORT				gpioPortD
 #define BUTTON_1_PIN				(4U)
 
@@ -55,7 +54,7 @@ typedef enum
 	press_3 ,
 	press_4 ,
 	press_5,
-	press_max=10,
+	press_max = 10,
 	hold_1s	,
 	hold_2s	,
 	hold_3s	,
@@ -87,7 +86,6 @@ typedef struct {
   boolean				press;
   boolean               isHolding;
 } Button_t;
-
 
 /******************************************************************************/
 /*                              PRIVATE DATA                                  */

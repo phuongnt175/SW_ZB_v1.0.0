@@ -29,7 +29,7 @@
 /*                     PRIVATE TYPES and DEFINITIONS                         */
 /******************************************************************************/
 
-#define PERIOD_SCAN_SENSORLIGHT									1000 	//	ms
+#define PERIOD_SCAN_SENSORLIGHT									30000 	//	ms
 
 /******************************************************************************/
 /*                     EXPORTED TYPES and DEFINITIONS                         */
@@ -96,7 +96,7 @@ void mainButtonPressCallbackHandler(uint8_t byButton, ButtonEvent_e pressHandler
 		case press_1:
 			if(byButton == SW_1)
 			{
-				emberAfCorePrintln("SW1: 1 time");
+				emberAfCorePrintln("SW1: 1 times");
 				turnOnLed(LED1,ledBlue);
 				sendOnOffStateReport(1, LED_ON);
 				sendBindingInitToTarget(SOURCE_ENDPOINT_PRIMARY,
@@ -106,7 +106,7 @@ void mainButtonPressCallbackHandler(uint8_t byButton, ButtonEvent_e pressHandler
 			}
 			else
 			{
-				emberAfCorePrintln("SW2: 1 time");
+				emberAfCorePrintln("SW2: 1 times");
 				turnOnLed(LED2,ledBlue);
 				sendOnOffStateReport(2, LED_ON);
 			}
@@ -125,7 +125,7 @@ void mainButtonPressCallbackHandler(uint8_t byButton, ButtonEvent_e pressHandler
 			}
 			else
 			{
-				emberAfCorePrintln("SW2: 2 time");
+				emberAfCorePrintln("SW2: 2 times");
 				turnOffRGBLed(LED2);
 				sendOnOffStateReport(2, LED_OFF);
 			}
@@ -134,13 +134,13 @@ void mainButtonPressCallbackHandler(uint8_t byButton, ButtonEvent_e pressHandler
 		case press_3:
 			if(byButton == SW_1)
 			{
-				emberAfCorePrintln("SW1: 3 time");
+				emberAfCorePrintln("SW1: 3 times");
 				emberAfPluginFindAndBindTargetStart(1);
 				toggleLed(LED2,ledyellow,3,200,200);
 			}
 			else
 			{
-				emberAfCorePrintln("SW2: 3 time");
+				emberAfCorePrintln("SW2: 3 times");
 				emberAfPluginFindAndBindInitiatorStart(1);
 				toggleLed(LED2,ledRGB,3,200,200);
 			}
@@ -149,22 +149,22 @@ void mainButtonPressCallbackHandler(uint8_t byButton, ButtonEvent_e pressHandler
 		case press_4:
 			if(byButton == SW_1)
 			{
-				emberAfCorePrintln("SW1: 4 time");
+				emberAfCorePrintln("SW1: 4 times");
 			}
 			else
 			{
-				emberAfCorePrintln("SW2: 4 time");
+				emberAfCorePrintln("SW2: 4 times");
 			}
 			break;
 
 		case press_5:
 			if(byButton == SW_1)
 			{
-				emberAfCorePrintln("SW1: 5 time");
+				emberAfCorePrintln("SW1: 5 times");
 			}
 			else
 			{
-				emberAfCorePrintln("SW2: 5 time");
+				emberAfCorePrintln("SW2: 5 times");
 				toggleLed(LED1,ledRed, 2, 200, 200);
 				g_SystemState = REBOOT_STATE;
 				emberEventControlSetDelayMS(mainStateEventControl,3000);
@@ -184,31 +184,55 @@ void mainButtonPressCallbackHandler(uint8_t byButton, ButtonEvent_e pressHandler
  */
 void mainButtonHoldCallbackHandler(uint8_t byButton, ButtonEvent_e holdingHandler)
 {
-//	emberAfCorePrintln("SW %d HOLDING %d s\n",button+1,holdingHandler-press_max);
 	switch(holdingHandler)
 	{
-		case hold_1s:
-			emberAfCorePrintln("Holding: 1 s");
-			break;
+	case hold_1s:
+		if(byButton == SW_1){
+			emberAfCorePrintln("SW1: 1 s");
+		}
+		else{
+			emberAfCorePrintln("SW2: 1 s");
+		}
+		break;
 
-		case hold_2s:
-			emberAfCorePrintln("Holding: 2 s");
-			break;
+	case hold_2s:
+		if(byButton == SW_1){
+			emberAfCorePrintln("SW1: 2 s");
+		}
+		else{
+			emberAfCorePrintln("SW2: 2 s");
+		}
+		break;
 
-		case hold_3s:
-			emberAfCorePrintln("Holding: 3 s");
-			break;
+	case hold_3s:
+		if(byButton == SW_1){
+			emberAfCorePrintln("SW1: 3 s");
+		}
+		else{
+			emberAfCorePrintln("SW2: 3 s");
+		}
+		break;
 
-		case hold_4s:
-			emberAfCorePrintln("Holding: 4 s");
-			break;
+	case hold_4s:
+		if(byButton == SW_1){
+			emberAfCorePrintln("SW1: 4 s");
+		}
+		else{
+			emberAfCorePrintln("SW2: 4 s");
+		}
+		break;
 
-		case hold_5s:
-			emberAfCorePrintln("Holding: 5 s");
-			break;
+	case hold_5s:
+		if(byButton == SW_1){
+			emberAfCorePrintln("SW1: 5 s");
+		}
+		else{
+			emberAfCorePrintln("SW2: 5 s");
+		}
+		break;
 
-		default:
-			break;
+	default:
+		break;
 	}
 }
 
@@ -334,7 +358,7 @@ void findNetworkHandler(void)
  * @param  None
  * @retval None
  */
-void LightSensor_Read_1timeHandler(void)
+void lightSensorRead1TimeHandler(void)
 {
 	emberEventControlSetInactive(lightSensorRead1timeControl);
 	g_iluxFirsttime = LightSensor_AdcPollingRead();
@@ -342,7 +366,7 @@ void LightSensor_Read_1timeHandler(void)
 	if(abs(g_iluxSecondtimes - g_iluxFirsttime) > 30)
 		{
 		g_iluxSecondtimes = g_iluxFirsttime;
-		sendLDRStateReport(3,g_iluxSecondtimes);
+		sendLdrStateReport(3,g_iluxSecondtimes);
 		emberAfCorePrintln("Light:   %d lux         ",g_iluxSecondtimes);
 			if(g_iluxSecondtimes > 500)
 			{
@@ -357,8 +381,8 @@ void LightSensor_Read_1timeHandler(void)
 }
 
 /**
- * @func    ReadValueTempHumiHandler
- * @brief   Event Sensor Handler
+ * @func    emberIncomingManyToOneRouteRequestHandler
+ * @brief   Handle incoming MTORRs
  * @param   None
  * @retval  None
  */
@@ -374,7 +398,7 @@ void emberIncomingManyToOneRouteRequestHandler(EmberNodeId iSource,
 
 /*
  * @func	MTORRsEventHandler
- * @brief	Read Status
+ * @brief	MTORRs event handle
  * @param	None
  * @retval	None
  */

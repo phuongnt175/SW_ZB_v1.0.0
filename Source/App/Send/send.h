@@ -17,7 +17,6 @@
 /*                              INCLUDE FILES                                 */
 /******************************************************************************/
 
-
 /******************************************************************************/
 /*                     PRIVATE TYPES and DEFINITIONS                         */
 /******************************************************************************/
@@ -53,7 +52,7 @@
 void sendZigDevRequest(void);
 void sendReportInfoHc(void);
 void sendOnOffStateReport(uint8_t byEndpoint, uint8_t byValue);
-void sendLDRStateReport(uint8_t byEndpoint, uint32_t dwValue);
+void sendLdrStateReport(uint8_t byEndpoint, uint32_t dwValue);
 void sendBindingInitToTarget(uint8_t byRemoteEndpoint, uint8_t byLocalEndpoint, bool boValue, uint16_t wNodeID);
 
 #endif /* SOURCE_APP_SEND_SEND_H_ */

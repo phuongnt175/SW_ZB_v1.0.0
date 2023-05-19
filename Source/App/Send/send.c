@@ -88,7 +88,7 @@ static void sendFillBufferGlobalCommand(EmberAfClusterId wClusterID,
 }
 
 /**
- * @func    SEND_ReportInfoHc
+ * @func    sendReportInfoHc
  * @brief   Send Report to HC
  * @param   None
  * @retval  None
@@ -159,12 +159,12 @@ void sendOnOffStateReport(uint8_t byEndpoint, uint8_t byValue){
 }
 
 /**
- * @func    sendLDRStateReport
+ * @func    sendLdrStateReport
  * @brief   Send lux value to app
  * @param   source, destination, address
  * @retval  None
  */
-void sendLDRStateReport(uint8_t byEndpoint, uint32_t dwValue){
+void sendLdrStateReport(uint8_t byEndpoint, uint32_t dwValue){
 	sendFillBufferGlobalCommand(ZCL_ILLUM_MEASUREMENT_CLUSTER_ID,
 								 ZCL_ILLUM_MEASURED_VALUE_ATTRIBUTE_ID,
 								 ZCL_READ_ATTRIBUTES_RESPONSE_COMMAND_ID,

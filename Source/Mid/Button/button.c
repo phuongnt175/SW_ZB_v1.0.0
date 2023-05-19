@@ -20,11 +20,9 @@
 /*                     PRIVATE TYPES and DEFINITIONS                         */
 /******************************************************************************/
 
-
 /******************************************************************************/
 /*                     EXPORTED TYPES and DEFINITIONS                         */
 /******************************************************************************/
-
 
 /******************************************************************************/
 /*                              PRIVATE DATA                                  */
@@ -86,11 +84,10 @@ void buttonInit(BUTTON_holdingEvent_t holdingHandle,BUTTON_pressEvent_t pressHan
                       true,
                       true);
   }
-
   g_holdingCallbackFunc = holdingHandle;
   g_pressAndHoldingCallbackFunc = pressHandler;
-
 }
+
 /*
  * @func	halInternalButtonIsr
  * @brief	IRQ button

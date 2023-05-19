@@ -43,9 +43,9 @@ typedef struct {
 EmberEventControl led1ToggleEventControl,led2ToggleEventControl;
 EmberEventControl *ledEventControl[LED_RGB_COUNT];
 
-LedArray_t ledArray[LED_RGB_COUNT][LED_RGB_ELEMENT] = {LED_RGB_1, LED_RGB_2};
+LedArray_t g_ledArray[LED_RGB_COUNT][LED_RGB_ELEMENT] = {LED_RGB_1, LED_RGB_2};
 
-LedArray_t ledAction[LED_RGB_COUNT];
+LedArray_t g_ledAction[LED_RGB_COUNT];
 
 /******************************************************************************/
 /*                              EXPORTED DATA                                 */
@@ -73,7 +73,7 @@ void ledInit(void)
 
 		for(int j = 0; j< LED_RGB_ELEMENT;j++){
 
-			GPIO_PinModeSet(ledArray[i][j].port, ledArray[i][j].pin, gpioModePushPull, 0);
+			GPIO_PinModeSet(g_ledArray[i][j].port, g_ledArray[i][j].pin, gpioModePushPull, 0);
 		}
 	}
 	turnOffRGBLed(LED1);
@@ -85,13 +85,13 @@ void ledInit(void)
 /**
  * @func    turnOffRGBLed
  * @brief   turn off RGB led
- * @param   ledNumber_e
+ * @param   index
  * @retval  None
  */
 void turnOffRGBLed(LedNumber_e index)
 {
 	for(int j=0;j<LED_RGB_ELEMENT;j++){
-		GPIO_PinOutSet(ledArray[index][j].port, ledArray[index][j].pin);
+		GPIO_PinOutSet(g_ledArray[index][j].port, g_ledArray[index][j].pin);
 	}
 }
 
@@ -107,10 +107,10 @@ void turnOnLed(LedNumber_e index, LedColor_e color)
 
 		if(((color >> j) & 0x01) == 1){
 
-			GPIO_PinOutClear(ledArray[index][j].port, ledArray[index][j].pin);
+			GPIO_PinOutClear(g_ledArray[index][j].port, g_ledArray[index][j].pin);
 		}else {
 
-			GPIO_PinOutSet(ledArray[index][j].port, ledArray[index][j].pin);
+			GPIO_PinOutSet(g_ledArray[index][j].port, g_ledArray[index][j].pin);
 		}
 	}
 }
@@ -118,16 +118,16 @@ void turnOnLed(LedNumber_e index, LedColor_e color)
 /**
  * @func    toggleLed
  * @brief   toggled LED
- * @param   ledNumber_e, ledColor_e, uint8_t, uint32_t
+ * @param   ledIndex, color, byToggleTime, byOnTimeMs, byOffTimeMs
  * @retval  None
  */
 void toggleLed(LedNumber_e ledIndex, LedColor_e color, uint8_t byToggleTime, uint32_t byOnTimeMs, uint32_t byOffTimeMs)
 {
-	ledAction[ledIndex].ledBlinkMode = LED_TOGGLE;
-	ledAction[ledIndex].color = color;
-	ledAction[ledIndex].onTime = byOnTimeMs;
-	ledAction[ledIndex].offTime = byOffTimeMs;
-	ledAction[ledIndex].blinkTime = byToggleTime*2;
+	g_ledAction[ledIndex].ledBlinkMode = LED_TOGGLE;
+	g_ledAction[ledIndex].color = color;
+	g_ledAction[ledIndex].onTime = byOnTimeMs;
+	g_ledAction[ledIndex].offTime = byOffTimeMs;
+	g_ledAction[ledIndex].blinkTime = byToggleTime*2;
 
 	emberEventControlSetActive(*ledEventControl[ledIndex]);
 }
@@ -135,41 +135,39 @@ void toggleLed(LedNumber_e ledIndex, LedColor_e color, uint8_t byToggleTime, uin
 /**
  * @func    toggleLedHandle
  * @brief   Event Led Handler
- * @param   ledNumber_e
+ * @param   ledIndex
  * @retval  None
  */
 void toggleLedHandle(LedNumber_e ledIndex)
 {
-	if(ledAction[ledIndex].blinkTime !=0){
+	if(g_ledAction[ledIndex].blinkTime !=0){
 
-		if(ledAction[ledIndex].blinkTime % 2){
+		if(g_ledAction[ledIndex].blinkTime % 2){
 
 			for( int i = 0; i<LED_RGB_ELEMENT; i++){
 
-				if(((ledAction[ledIndex].color >> i ) & 0x01) == 1 ){
+				if(((g_ledAction[ledIndex].color >> i ) & 0x01) == 1 ){
 
-					GPIO_PinOutClear(ledArray[ledIndex][i].port, ledArray[ledIndex][i].pin);
+					GPIO_PinOutClear(g_ledArray[ledIndex][i].port, g_ledArray[ledIndex][i].pin);
 				}else {
 
-					GPIO_PinOutSet(ledArray[ledIndex][i].port, ledArray[ledIndex][i].pin);
+					GPIO_PinOutSet(g_ledArray[ledIndex][i].port, g_ledArray[ledIndex][i].pin);
 				}
 			}
-			emberEventControlSetDelayMS(*ledEventControl[ledIndex], ledAction[ledIndex].onTime);
+			emberEventControlSetDelayMS(*ledEventControl[ledIndex], g_ledAction[ledIndex].onTime);
 		}else {
 
 			for( int j = 0; j<LED_RGB_ELEMENT; j++){
 
-				GPIO_PinOutSet(ledArray[ledIndex][j].port, ledArray[ledIndex][j].pin);
+				GPIO_PinOutSet(g_ledArray[ledIndex][j].port, g_ledArray[ledIndex][j].pin);
 			}
-			emberEventControlSetDelayMS(*ledEventControl[ledIndex], ledAction[ledIndex].offTime);
+			emberEventControlSetDelayMS(*ledEventControl[ledIndex], g_ledAction[ledIndex].offTime);
 		}
-		ledAction[ledIndex].blinkTime--;
-	}else {
-
-		ledAction[ledIndex].ledBlinkMode = LED_FREE;
-		for( int j = 0; j<LED_RGB_ELEMENT; j++){
-
-			GPIO_PinOutSet(ledArray[ledIndex][j].port, ledArray[ledIndex][j].pin);
+		g_ledAction[ledIndex].blinkTime--;
+	}else{
+			g_ledAction[ledIndex].ledBlinkMode = LED_FREE;
+			for( int j = 0; j<LED_RGB_ELEMENT; j++){
+			GPIO_PinOutSet(g_ledArray[ledIndex][j].port, g_ledArray[ledIndex][j].pin);
 		}
 	}
 }
@@ -183,7 +181,7 @@ void toggleLedHandle(LedNumber_e ledIndex)
 void led1ToggleEventHandle(void)
 {
 	emberEventControlSetInactive(led1ToggleEventControl);
-	switch(ledAction[LED1].ledBlinkMode)
+	switch(g_ledAction[LED1].ledBlinkMode)
 	{
 		case LED_TOGGLE:
 			toggleLedHandle(LED1);
@@ -203,7 +201,7 @@ void led1ToggleEventHandle(void)
 void led2ToggleEventHandle(void)
 {
 	emberEventControlSetInactive(led2ToggleEventControl);
-	switch(ledAction[LED2].ledBlinkMode)
+	switch(g_ledAction[LED2].ledBlinkMode)
 	{
 		case LED_TOGGLE:
 			toggleLedHandle(LED2);
