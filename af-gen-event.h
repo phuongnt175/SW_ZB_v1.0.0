@@ -13,7 +13,6 @@
   EmberEventControl emberAfIdentifyClusterServerTickCallbackControl2; \
   EmberEventControl emberAfIdentifyClusterServerTickCallbackControl3; \
   extern EmberEventControl readValueSensorLightControl; \
-  extern EmberEventControl lightSensorRead1timeControl; \
   extern EmberEventControl MTORRsEventControl; \
   extern EmberEventControl buttonPressAndHoldEventControl; \
   extern EmberEventControl buttonReleaseEventControl; \
@@ -30,9 +29,9 @@
   extern EmberEventControl joinNetworkEventControl; \
   extern EmberEventControl led1ToggleEventControl; \
   extern EmberEventControl led2ToggleEventControl; \
+  extern EmberEventControl lightSensorRead1timeControl; \
   extern EmberEventControl mainStateEventControl; \
   extern void LightSensor_AdcPollingRead(void); \
-  extern void LightSensor_Read_1timeHandler(void); \
   extern void MTORRsEventHandler(void); \
   extern void buttonPressAndHoldEventHandle(void); \
   extern void buttonReleaseEventHandle(void); \
@@ -49,6 +48,7 @@
   extern void joinNetworkEventHandler(void); \
   extern void led1ToggleEventHandle(void); \
   extern void led2ToggleEventHandle(void); \
+  extern void lightSensorRead1TimeHandler(void); \
   extern void mainStateEventHandler(void); \
   static void clusterTickWrapper(EmberEventControl *control, EmberAfTickFunction callback, uint8_t endpoint) \
   { \
@@ -68,7 +68,6 @@
   { &emberAfIdentifyClusterServerTickCallbackControl2, emberAfIdentifyClusterServerTickCallbackWrapperFunction2 }, \
   { &emberAfIdentifyClusterServerTickCallbackControl3, emberAfIdentifyClusterServerTickCallbackWrapperFunction3 }, \
   { &readValueSensorLightControl, LightSensor_AdcPollingRead }, \
-  { &lightSensorRead1timeControl, LightSensor_Read_1timeHandler }, \
   { &MTORRsEventControl, MTORRsEventHandler }, \
   { &buttonPressAndHoldEventControl, buttonPressAndHoldEventHandle }, \
   { &buttonReleaseEventControl, buttonReleaseEventHandle }, \
@@ -85,6 +84,7 @@
   { &joinNetworkEventControl, joinNetworkEventHandler }, \
   { &led1ToggleEventControl, led1ToggleEventHandle }, \
   { &led2ToggleEventControl, led2ToggleEventHandle }, \
+  { &lightSensorRead1timeControl, lightSensorRead1TimeHandler }, \
   { &mainStateEventControl, mainStateEventHandler }, \
 
 
@@ -93,7 +93,6 @@
   "Identify Cluster Server EP 2",  \
   "Identify Cluster Server EP 3",  \
   "Read value sensor light control",  \
-  "Light sensor_ read_1time control",  \
   "M t o r rs event control",  \
   "Button press and hold event control",  \
   "Button release event control",  \
@@ -110,6 +109,7 @@
   "Join network event control",  \
   "Led1 toggle event control",  \
   "Led2 toggle event control",  \
+  "Light sensor read1time control",  \
   "Main state event control",  \
 
 

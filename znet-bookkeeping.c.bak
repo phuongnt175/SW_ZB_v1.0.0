@@ -33,11 +33,11 @@ void emAfResetAttributes(uint8_t endpointId)
 }
 
 // PreCommandReceived function declarations.
-bool emberAfPreCommandReceivedCallback(EmberAfClusterCommand* cmd);  // Global
+//bool emberAfPreCommandReceivedCallback(EmberAfClusterCommand* cmd);  // Global
 
 bool emAfPreCommandReceived(EmberAfClusterCommand* cmd)
 {
-  return emberAfPreCommandReceivedCallback(cmd);  // Global
+//  return emberAfPreCommandReceivedCallback(cmd);  // Global
 }
 
 // PreZDOMessageReceived function declarations.

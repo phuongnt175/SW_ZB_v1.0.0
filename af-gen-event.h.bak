@@ -12,9 +12,8 @@
   EmberEventControl emberAfIdentifyClusterServerTickCallbackControl1; \
   EmberEventControl emberAfIdentifyClusterServerTickCallbackControl2; \
   EmberEventControl emberAfIdentifyClusterServerTickCallbackControl3; \
-  extern EmberEventControl FindNetworkControl; \
   extern EmberEventControl readValueSensorLightControl; \
-  extern EmberEventControl LightSensor_Read_1timeControl; \
+  extern EmberEventControl lightSensorRead1timeControl; \
   extern EmberEventControl MTORRsEventControl; \
   extern EmberEventControl buttonPressAndHoldEventControl; \
   extern EmberEventControl buttonReleaseEventControl; \
@@ -26,12 +25,12 @@
   extern EmberEventControl emberAfPluginReportingTickEventControl; \
   extern EmberEventControl emberAfPluginScanDispatchScanEventControl; \
   extern EmberEventControl emberAfPluginUpdateTcLinkKeyBeginTcLinkKeyUpdateEventControl; \
+  extern EmberEventControl findNetworkControl; \
   extern EmberEventControl findingAndBindingEventControl; \
   extern EmberEventControl joinNetworkEventControl; \
   extern EmberEventControl led1ToggleEventControl; \
   extern EmberEventControl led2ToggleEventControl; \
   extern EmberEventControl mainStateEventControl; \
-  extern void FindNetworkHandler(void); \
   extern void LightSensor_AdcPollingRead(void); \
   extern void LightSensor_Read_1timeHandler(void); \
   extern void MTORRsEventHandler(void); \
@@ -45,6 +44,7 @@
   extern void emberAfPluginReportingTickEventHandler(void); \
   extern void emberAfPluginScanDispatchScanEventHandler(void); \
   extern void emberAfPluginUpdateTcLinkKeyBeginTcLinkKeyUpdateEventHandler(void); \
+  extern void findNetworkHandler(void); \
   extern void findingAndBindingEventHandler(void); \
   extern void joinNetworkEventHandler(void); \
   extern void led1ToggleEventHandle(void); \
@@ -67,9 +67,8 @@
   { &emberAfIdentifyClusterServerTickCallbackControl1, emberAfIdentifyClusterServerTickCallbackWrapperFunction1 }, \
   { &emberAfIdentifyClusterServerTickCallbackControl2, emberAfIdentifyClusterServerTickCallbackWrapperFunction2 }, \
   { &emberAfIdentifyClusterServerTickCallbackControl3, emberAfIdentifyClusterServerTickCallbackWrapperFunction3 }, \
-  { &FindNetworkControl, FindNetworkHandler }, \
   { &readValueSensorLightControl, LightSensor_AdcPollingRead }, \
-  { &LightSensor_Read_1timeControl, LightSensor_Read_1timeHandler }, \
+  { &lightSensorRead1timeControl, LightSensor_Read_1timeHandler }, \
   { &MTORRsEventControl, MTORRsEventHandler }, \
   { &buttonPressAndHoldEventControl, buttonPressAndHoldEventHandle }, \
   { &buttonReleaseEventControl, buttonReleaseEventHandle }, \
@@ -81,6 +80,7 @@
   { &emberAfPluginReportingTickEventControl, emberAfPluginReportingTickEventHandler }, \
   { &emberAfPluginScanDispatchScanEventControl, emberAfPluginScanDispatchScanEventHandler }, \
   { &emberAfPluginUpdateTcLinkKeyBeginTcLinkKeyUpdateEventControl, emberAfPluginUpdateTcLinkKeyBeginTcLinkKeyUpdateEventHandler }, \
+  { &findNetworkControl, findNetworkHandler }, \
   { &findingAndBindingEventControl, findingAndBindingEventHandler }, \
   { &joinNetworkEventControl, joinNetworkEventHandler }, \
   { &led1ToggleEventControl, led1ToggleEventHandle }, \
@@ -92,7 +92,6 @@
   "Identify Cluster Server EP 1",  \
   "Identify Cluster Server EP 2",  \
   "Identify Cluster Server EP 3",  \
-  "Find network control",  \
   "Read value sensor light control",  \
   "Light sensor_ read_1time control",  \
   "M t o r rs event control",  \
@@ -106,6 +105,7 @@
   "Reporting Plugin Tick",  \
   "Scan Dispatch Plugin Scan",  \
   "Update TC Link Key Plugin BeginTcLinkKeyUpdate",  \
+  "Find network control",  \
   "Finding and binding event control",  \
   "Join network event control",  \
   "Led1 toggle event control",  \
